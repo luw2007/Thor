@@ -22,9 +22,13 @@
 
 
 [[constraint]]
+  name = "github.com/Sirupsen/logrus"
+  version = "0.8.7"
+
+[[constraint]]
   name = "github.com/elazarl/goproxy"
   version = "1.0.0"
 
 [[constraint]]
   name = "github.com/levigross/grequests"
-  branch = "master"
+  version = "0.2.0"
