@@ -16,6 +16,10 @@ type direct struct {
 	entry  *logrus.Entry
 }
 
+const (
+	defaultCheckURI = "https://baidu.com"
+)
+
 func NewDirect(addr string, proxy *url.URL, entry *logrus.Entry) *direct {
 	tr := &http.Transport{
 		DialContext:           utils.DialContext(1*time.Second, 1*time.Second, addr),
@@ -35,9 +39,9 @@ func NewDirect(addr string, proxy *url.URL, entry *logrus.Entry) *direct {
 			Transport: tr,
 		},
 		entry: entry.WithFields(logrus.Fields{
-			"addr": addr,
+			"addr":  addr,
 			"proxy": proxy.String(),
-			"type": "direct",
+			"type":  "direct",
 		}),
 	}
 }
