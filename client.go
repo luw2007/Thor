@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"crypto/tls"
+
 	"github.com/Sirupsen/logrus"
 	"github.com/luw2007/thor/utils"
 )
@@ -23,6 +25,7 @@ const (
 func NewDirect(addr string, proxy *url.URL, entry *logrus.Entry) *direct {
 	tr := &http.Transport{
 		DialContext:           utils.DialContext(1*time.Second, 1*time.Second, addr),
+		TLSClientConfig:       &tls.Config{InsecureSkipVerify: true},
 		MaxIdleConns:          100,
 		IdleConnTimeout:       50 * time.Second,
 		TLSHandshakeTimeout:   1 * time.Second,
@@ -37,6 +40,7 @@ func NewDirect(addr string, proxy *url.URL, entry *logrus.Entry) *direct {
 	return &direct{
 		client: &http.Client{
 			Transport: tr,
+			Timeout:   time.Second * 2,
 		},
 		entry: entry.WithFields(logrus.Fields{
 			"addr":  addr,
