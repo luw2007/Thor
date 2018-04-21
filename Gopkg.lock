@@ -4,24 +4,24 @@
 [[projects]]
   name = "github.com/Sirupsen/logrus"
   packages = ["."]
-  revision = "418b41d23a1bf978c06faea5313ba194650ac088"
-  version = "v0.8.7"
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
 
 [[projects]]
-  name = "github.com/elazarl/goproxy"
-  packages = ["."]
-  revision = "0a5b8bdb09049ae4ae68e75437ded0b7a2e324e3"
-  version = "v1.0"
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "e73bf333ef8920dbb52ad18d4bd38ad9d9bc76d7"
 
 [[projects]]
-  name = "github.com/levigross/grequests"
-  packages = ["."]
-  revision = "85b8e7ae710aba07c934cfb8a6eb9d0339a0ba89"
-  version = "0.2"
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = ["unix","windows"]
+  revision = "79b0c6888797020a994db17c8510466c72fe75d9"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "81063506be83cb478b0524c82ede6177c14e5b61f00d03908811a96994d1d089"
+  inputs-digest = "2fa0433bf916eb60ef5dc0bf3be35418eabc8ea7e3c28d1b30e8a9999af82bf2"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -16,22 +16,27 @@ type direct struct {
 	entry  *logrus.Entry
 }
 
-func NewDirect(addr string, entry *logrus.Entry) *direct {
+func NewDirect(addr string, proxy *url.URL, entry *logrus.Entry) *direct {
+	tr := &http.Transport{
+		DialContext:           utils.DialContext(1*time.Second, 1*time.Second, addr),
+		MaxIdleConns:          100,
+		IdleConnTimeout:       50 * time.Second,
+		TLSHandshakeTimeout:   1 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+		ResponseHeaderTimeout: 1 * time.Second,
+		DisableCompression:    true,
+		MaxIdleConnsPerHost:   100,
+	}
+	if proxy.Host != "" {
+		tr.Proxy = http.ProxyURL(proxy)
+	}
 	return &direct{
 		client: &http.Client{
-			Transport: &http.Transport{
-				DialContext:           utils.DialContext(1*time.Second, 1*time.Second, addr),
-				MaxIdleConns:          100,
-				IdleConnTimeout:       50 * time.Second,
-				TLSHandshakeTimeout:   1 * time.Second,
-				ExpectContinueTimeout: 1 * time.Second,
-				ResponseHeaderTimeout: 1 * time.Second,
-				DisableCompression:    true,
-				MaxIdleConnsPerHost:   100,
-			},
+			Transport: tr,
 		},
 		entry: entry.WithFields(logrus.Fields{
 			"addr": addr,
+			"proxy": proxy.String(),
 			"type": "direct",
 		}),
 	}
