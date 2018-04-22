@@ -44,7 +44,7 @@ func NewDirect(addr string, proxy *url.URL, entry *logrus.Entry) *direct {
 		},
 		entry: entry.WithFields(logrus.Fields{
 			"addr":  addr,
-			"proxy": proxy.String(),
+			"Proxy": proxy.String(),
 			"type":  "direct",
 		}),
 	}

@@ -17,3 +17,8 @@ type Transporter interface {
 	Post(url, ua string, params map[string]string) (int, []byte)
 	Close()
 }
+
+type Resource interface {
+	GetID() int
+	Info() []byte
+}
