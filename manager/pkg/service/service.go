@@ -10,7 +10,8 @@ import (
 // ManagerService 管理服务
 type ManagerService interface {
 	Register(ctx context.Context, workerId int, addr string) (reply thor.Reply)
-	Resource(ctx context.Context, t res.Type, id int) (meta res.Meta)
+	Resource(ctx context.Context, t res.Type, id int) (reply thor.Reply)
+	ResourceAdd(ctx context.Context, meta res.Meta) (reply thor.Reply)
 }
 
 type basicManagerService struct{}
@@ -19,9 +20,13 @@ func (b *basicManagerService) Register(ctx context.Context, workerId int, addr s
 	// TODO implement the business logic of Register
 	return reply
 }
-func (b *basicManagerService) Resource(ctx context.Context, t res.Type, id int) (meta res.Meta) {
+func (b *basicManagerService) Resource(ctx context.Context, t res.Type, id int) (reply thor.Reply) {
 	// TODO implement the business logic of Resource
-	return meta
+	return reply
+}
+func (b *basicManagerService) ResourceAdd(ctx context.Context, meta res.Meta) (reply thor.Reply) {
+	// TODO implement the business logic of ResourceAdd
+	return reply
 }
 
 // NewBasicManagerService returns a naive, stateless implementation of ManagerService.

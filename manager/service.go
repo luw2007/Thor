@@ -10,5 +10,6 @@ import (
 // ManagerService 管理服务
 type ManagerService interface {
 	Register(ctx context.Context, workerId int, addr string) (reply thor.Reply)
-	Resource(ctx context.Context, t res.Type, id int) (meta res.Meta)
+	Resource(ctx context.Context, t res.Type, id int) (reply thor.Reply)
+	ResourceAdd(ctx context.Context, meta res.Meta) (reply thor.Reply)
 }

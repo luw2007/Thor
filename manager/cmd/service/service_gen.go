@@ -18,13 +18,14 @@ func createService(endpoints endpoint.Endpoints) (g *group.Group) {
 }
 func defaultHttpOptions(logger log.Logger, tracer opentracinggo.Tracer) map[string][]http.ServerOption {
 	options := map[string][]http.ServerOption{
-		"Register": {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "Register", logger))},
-		"Resource": {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "Resource", logger))},
+		"Register":    {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "Register", logger))},
+		"Resource":    {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "Resource", logger))},
+		"ResourceAdd": {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "ResourceAdd", logger))},
 	}
 	return options
 }
 func addEndpointMiddlewareToAllMethods(mw map[string][]endpoint1.Middleware, m endpoint1.Middleware) {
-	methods := []string{"Register", "Resource"}
+	methods := []string{"Register", "Resource", "ResourceAdd"}
 	for _, v := range methods {
 		mw[v] = append(mw[v], m)
 	}

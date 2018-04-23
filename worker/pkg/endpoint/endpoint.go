@@ -5,7 +5,6 @@ import (
 	endpoint "github.com/go-kit/kit/endpoint"
 	thor "github.com/luw2007/thor"
 	service "github.com/luw2007/thor/worker/pkg/service"
-	"github.com/luw2007/thor/res"
 )
 
 // PostResourceRequest collects the request parameters for the PostResource method.

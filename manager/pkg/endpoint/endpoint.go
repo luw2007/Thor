@@ -36,15 +36,34 @@ type ResourceRequest struct {
 
 // ResourceResponse collects the response parameters for the Resource method.
 type ResourceResponse struct {
-	Meta res.Meta `json:"meta"`
+	Reply thor.Reply `json:"reply"`
 }
 
 // MakeResourceEndpoint returns an endpoint that invokes Resource on the service.
 func MakeResourceEndpoint(s service.ManagerService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(ResourceRequest)
-		meta := s.Resource(ctx, req.T, req.Id)
-		return ResourceResponse{Meta: meta}, nil
+		reply := s.Resource(ctx, req.T, req.Id)
+		return ResourceResponse{Reply: reply}, nil
+	}
+}
+
+// ResourceAddRequest collects the request parameters for the ResourceAdd method.
+type ResourceAddRequest struct {
+	Meta res.Meta `json:"meta"`
+}
+
+// ResourceAddResponse collects the response parameters for the ResourceAdd method.
+type ResourceAddResponse struct {
+	Reply thor.Reply `json:"reply"`
+}
+
+// MakeResourceAddEndpoint returns an endpoint that invokes ResourceAdd on the service.
+func MakeResourceAddEndpoint(s service.ManagerService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(ResourceAddRequest)
+		reply := s.ResourceAdd(ctx, req.Meta)
+		return ResourceAddResponse{Reply: reply}, nil
 	}
 }
 
@@ -62,7 +81,7 @@ func (e Endpoints) Register(ctx context.Context, workerId int, addr string) (rep
 }
 
 // Resource implements Service. Primarily useful in a client.
-func (e Endpoints) Resource(ctx context.Context, t res.Type, id int) (meta res.Meta) {
+func (e Endpoints) Resource(ctx context.Context, t res.Type, id int) (reply thor.Reply) {
 	request := ResourceRequest{
 		Id: id,
 		T:  t,
@@ -71,5 +90,15 @@ func (e Endpoints) Resource(ctx context.Context, t res.Type, id int) (meta res.M
 	if err != nil {
 		return
 	}
-	return response.(ResourceResponse).Meta
+	return response.(ResourceResponse).Reply
+}
+
+// ResourceAdd implements Service. Primarily useful in a client.
+func (e Endpoints) ResourceAdd(ctx context.Context, meta res.Meta) (reply thor.Reply) {
+	request := ResourceAddRequest{Meta: meta}
+	response, err := e.ResourceAddEndpoint(ctx, request)
+	if err != nil {
+		return
+	}
+	return response.(ResourceAddResponse).Reply
 }
