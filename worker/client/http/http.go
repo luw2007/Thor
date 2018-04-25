@@ -4,15 +4,16 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io/ioutil"
+	http1 "net/http"
+	"net/url"
+	"strings"
+
 	endpoint "github.com/go-kit/kit/endpoint"
 	http "github.com/go-kit/kit/transport/http"
 	endpoint1 "github.com/luw2007/thor/worker/pkg/endpoint"
 	http2 "github.com/luw2007/thor/worker/pkg/http"
 	service "github.com/luw2007/thor/worker/pkg/service"
-	"io/ioutil"
-	http1 "net/http"
-	"net/url"
-	"strings"
 )
 
 // New returns an AddService backed by an HTTP server living at the remote

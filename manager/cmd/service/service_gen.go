@@ -21,11 +21,12 @@ func defaultHttpOptions(logger log.Logger, tracer opentracinggo.Tracer) map[stri
 		"Register":    {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "Register", logger))},
 		"Resource":    {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "Resource", logger))},
 		"ResourceAdd": {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "ResourceAdd", logger))},
+		"ResourceDel": {http.ServerErrorLogger(logger), http.ServerBefore(opentracing.HTTPToContext(tracer, "ResourceDel", logger))},
 	}
 	return options
 }
 func addEndpointMiddlewareToAllMethods(mw map[string][]endpoint1.Middleware, m endpoint1.Middleware) {
-	methods := []string{"Register", "Resource", "ResourceAdd"}
+	methods := []string{"Register", "Resource", "ResourceDel", "ResourceAdd"}
 	for _, v := range methods {
 		mw[v] = append(mw[v], m)
 	}

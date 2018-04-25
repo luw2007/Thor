@@ -13,9 +13,9 @@ type user struct {
 	PayPassword string `json:"pay_password"`
 }
 
-func NewUser(user_id int, name, password, payPassword string) *user {
+func NewUser(id int, name, password, payPassword string) *user {
 	return &user{
-		ID:          user_id,
+		ID:          id,
 		User:        name,
 		Password:    password,
 		PayPassword: payPassword,

@@ -4,15 +4,16 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"io/ioutil"
+	http1 "net/http"
+	"net/url"
+	"strings"
+
 	endpoint "github.com/go-kit/kit/endpoint"
 	http "github.com/go-kit/kit/transport/http"
 	endpoint1 "github.com/luw2007/thor/manager/pkg/endpoint"
 	http2 "github.com/luw2007/thor/manager/pkg/http"
 	service "github.com/luw2007/thor/manager/pkg/service"
-	"io/ioutil"
-	http1 "net/http"
-	"net/url"
-	"strings"
 )
 
 // New returns an AddService backed by an HTTP server living at the remote
@@ -36,6 +37,11 @@ func New(instance string, options map[string][]http.ClientOption) (service.Manag
 		resourceEndpoint = http.NewClient("POST", copyURL(u, "/resource"), encodeHTTPGenericRequest, decodeResourceResponse, options["Resource"]...).Endpoint()
 	}
 
+	var resourceDelEndpoint endpoint.Endpoint
+	{
+		resourceDelEndpoint = http.NewClient("POST", copyURL(u, "/resource-del"), encodeHTTPGenericRequest, decodeResourceDelResponse, options["ResourceDel"]...).Endpoint()
+	}
+
 	var resourceAddEndpoint endpoint.Endpoint
 	{
 		resourceAddEndpoint = http.NewClient("POST", copyURL(u, "/resource-add"), encodeHTTPGenericRequest, decodeResourceAddResponse, options["ResourceAdd"]...).Endpoint()
@@ -44,6 +50,7 @@ func New(instance string, options map[string][]http.ClientOption) (service.Manag
 	return endpoint1.Endpoints{
 		RegisterEndpoint:    registerEndpoint,
 		ResourceAddEndpoint: resourceAddEndpoint,
+		ResourceDelEndpoint: resourceDelEndpoint,
 		ResourceEndpoint:    resourceEndpoint,
 	}, nil
 }
@@ -82,6 +89,19 @@ func decodeResourceResponse(_ context.Context, r *http1.Response) (interface{}, 
 		return nil, http2.ErrorDecoder(r)
 	}
 	var resp endpoint1.ResourceResponse
+	err := json.NewDecoder(r.Body).Decode(&resp)
+	return resp, err
+}
+
+// decodeResourceDelResponse is a transport/http.DecodeResponseFunc that decodes
+// a JSON-encoded concat response from the HTTP response body. If the response
+// as a non-200 status code, we will interpret that as an error and attempt to
+//  decode the specific error message from the response body.
+func decodeResourceDelResponse(_ context.Context, r *http1.Response) (interface{}, error) {
+	if r.StatusCode != http1.StatusOK {
+		return nil, http2.ErrorDecoder(r)
+	}
+	var resp endpoint1.ResourceDelResponse
 	err := json.NewDecoder(r.Body).Decode(&resp)
 	return resp, err
 }

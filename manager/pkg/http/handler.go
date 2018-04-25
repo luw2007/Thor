@@ -3,11 +3,12 @@ package http
 import (
 	"context"
 	"encoding/json"
+	http1 "net/http"
+
 	http "github.com/go-kit/kit/transport/http"
 	handlers "github.com/gorilla/handlers"
 	mux "github.com/gorilla/mux"
 	endpoint "github.com/luw2007/thor/manager/pkg/endpoint"
-	http1 "net/http"
 )
 
 // makeRegisterHandler creates the handler logic
@@ -47,6 +48,27 @@ func decodeResourceRequest(_ context.Context, r *http1.Request) (interface{}, er
 // encodeResourceResponse is a transport/http.EncodeResponseFunc that encodes
 // the response as JSON to the response writer
 func encodeResourceResponse(ctx context.Context, w http1.ResponseWriter, response interface{}) (err error) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	err = json.NewEncoder(w).Encode(response)
+	return
+}
+
+// makeResourceDelHandler creates the handler logic
+func makeResourceDelHandler(m *mux.Router, endpoints endpoint.Endpoints, options []http.ServerOption) {
+	m.Methods("POST").Path("/resource-del").Handler(handlers.CORS(handlers.AllowedMethods([]string{"POST"}), handlers.AllowedOrigins([]string{"*"}))(http.NewServer(endpoints.ResourceDelEndpoint, decodeResourceDelRequest, encodeResourceDelResponse, options...)))
+}
+
+// decodeResourceDelResponse  is a transport/http.DecodeRequestFunc that decodes a
+// JSON-encoded request from the HTTP request body.
+func decodeResourceDelRequest(_ context.Context, r *http1.Request) (interface{}, error) {
+	req := endpoint.ResourceDelRequest{}
+	err := json.NewDecoder(r.Body).Decode(&req)
+	return req, err
+}
+
+// encodeResourceDelResponse is a transport/http.EncodeResponseFunc that encodes
+// the response as JSON to the response writer
+func encodeResourceDelResponse(ctx context.Context, w http1.ResponseWriter, response interface{}) (err error) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	err = json.NewEncoder(w).Encode(response)
 	return

@@ -6,13 +6,21 @@ import (
 )
 
 type cdn struct {
-	Id     int     `json:"id"`
+	ID     int     `json:"id"`
 	Source url.URL `json:"source"` // 源地址
 	Host   string  `json:"host"`   // cdn地址 ip 或者ip:port
 }
 
+func NewCDN(id int, source url.URL, host string) *cdn {
+	return &cdn{
+		ID:     id,
+		Source: source,
+		Host:   host,
+	}
+}
+
 func (u cdn) GetID() int {
-	return u.Id
+	return u.ID
 }
 
 func (u cdn) Info() []byte {

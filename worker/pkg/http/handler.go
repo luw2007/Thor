@@ -3,11 +3,12 @@ package http
 import (
 	"context"
 	"encoding/json"
+	http1 "net/http"
+
 	http "github.com/go-kit/kit/transport/http"
 	handlers "github.com/gorilla/handlers"
 	mux "github.com/gorilla/mux"
 	endpoint "github.com/luw2007/thor/worker/pkg/endpoint"
-	http1 "net/http"
 )
 
 // makePostResourceHandler creates the handler logic

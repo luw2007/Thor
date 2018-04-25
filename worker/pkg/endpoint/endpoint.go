@@ -2,8 +2,10 @@ package endpoint
 
 import (
 	"context"
+
 	endpoint "github.com/go-kit/kit/endpoint"
 	thor "github.com/luw2007/thor"
+	"github.com/luw2007/thor/res"
 	service "github.com/luw2007/thor/worker/pkg/service"
 )
 

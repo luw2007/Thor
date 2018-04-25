@@ -2,6 +2,7 @@ package endpoint
 
 import (
 	"context"
+
 	endpoint "github.com/go-kit/kit/endpoint"
 	thor "github.com/luw2007/thor"
 	service "github.com/luw2007/thor/manager/pkg/service"
@@ -48,6 +49,25 @@ func MakeResourceEndpoint(s service.ManagerService) endpoint.Endpoint {
 	}
 }
 
+// ResourceDelRequest collects the request parameters for the ResourceDel method.
+type ResourceDelRequest struct {
+	Meta res.Meta `json:"meta"`
+}
+
+// ResourceDelResponse collects the response parameters for the ResourceDel method.
+type ResourceDelResponse struct {
+	Reply thor.Reply `json:"reply"`
+}
+
+// MakeResourceDelEndpoint returns an endpoint that invokes ResourceDel on the service.
+func MakeResourceDelEndpoint(s service.ManagerService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(ResourceDelRequest)
+		reply := s.ResourceDel(ctx, req.Meta)
+		return ResourceDelResponse{Reply: reply}, nil
+	}
+}
+
 // ResourceAddRequest collects the request parameters for the ResourceAdd method.
 type ResourceAddRequest struct {
 	Meta res.Meta `json:"meta"`
@@ -91,6 +111,16 @@ func (e Endpoints) Resource(ctx context.Context, t res.Type, id int) (reply thor
 		return
 	}
 	return response.(ResourceResponse).Reply
+}
+
+// ResourceDel implements Service. Primarily useful in a client.
+func (e Endpoints) ResourceDel(ctx context.Context, meta res.Meta) (reply thor.Reply) {
+	request := ResourceDelRequest{Meta: meta}
+	response, err := e.ResourceDelEndpoint(ctx, request)
+	if err != nil {
+		return
+	}
+	return response.(ResourceDelResponse).Reply
 }
 
 // ResourceAdd implements Service. Primarily useful in a client.

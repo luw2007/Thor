@@ -12,6 +12,7 @@ import (
 type Endpoints struct {
 	RegisterEndpoint    endpoint.Endpoint
 	ResourceEndpoint    endpoint.Endpoint
+	ResourceDelEndpoint endpoint.Endpoint
 	ResourceAddEndpoint endpoint.Endpoint
 }
 
@@ -21,6 +22,7 @@ func New(s service.ManagerService, mdw map[string][]endpoint.Middleware) Endpoin
 	eps := Endpoints{
 		RegisterEndpoint:    MakeRegisterEndpoint(s),
 		ResourceAddEndpoint: MakeResourceAddEndpoint(s),
+		ResourceDelEndpoint: MakeResourceDelEndpoint(s),
 		ResourceEndpoint:    MakeResourceEndpoint(s),
 	}
 	for _, m := range mdw["Register"] {
@@ -28,6 +30,9 @@ func New(s service.ManagerService, mdw map[string][]endpoint.Middleware) Endpoin
 	}
 	for _, m := range mdw["Resource"] {
 		eps.ResourceEndpoint = m(eps.ResourceEndpoint)
+	}
+	for _, m := range mdw["ResourceDel"] {
+		eps.ResourceDelEndpoint = m(eps.ResourceDelEndpoint)
 	}
 	for _, m := range mdw["ResourceAdd"] {
 		eps.ResourceAddEndpoint = m(eps.ResourceAddEndpoint)
