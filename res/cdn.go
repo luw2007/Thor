@@ -2,32 +2,31 @@ package res
 
 import (
 	"encoding/json"
-	"net/url"
 )
 
-type cdn struct {
+type CDN struct {
 	ID     int     `json:"id"`
-	Source url.URL `json:"source"` // 源地址
+	Source string `json:"source"` // 源地址
 	Host   string  `json:"host"`   // cdn地址 ip 或者ip:port
 }
 
-func NewCDN(id int, source url.URL, host string) *cdn {
-	return &cdn{
+func NewCDN(id int, source string, host string) *CDN {
+	return &CDN{
 		ID:     id,
 		Source: source,
 		Host:   host,
 	}
 }
 
-func (u cdn) GetID() int {
+func (u CDN) GetID() int {
 	return u.ID
 }
 
-func (u cdn) Info() []byte {
+func (u CDN) Info() []byte {
 	info, _ := json.Marshal(u)
 	return info
 }
 
-func (u *cdn) Type() Type {
-	return CDN
+func (u *CDN) Type() Type {
+	return ResCDN
 }

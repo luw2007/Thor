@@ -2,26 +2,26 @@ package res
 
 import "encoding/json"
 
-type proxy struct {
+type Proxy struct {
 	ID   int    `json:"id"`   // 代理编号
 	Host string `json:"host"` // 代理 ip:port
 }
 
-func NewProxy(id int, host string) *proxy {
-	return &proxy{
+func NewProxy(id int, host string) *Proxy {
+	return &Proxy{
 		ID:   id,
 		Host: host,
 	}
 }
-func (u proxy) GetID() int {
+func (u Proxy) GetID() int {
 	return u.ID
 }
 
-func (u proxy) Info() []byte {
+func (u Proxy) Info() []byte {
 	info, _ := json.Marshal(u)
 	return info
 }
 
-func (u *proxy) Type() Type {
-	return Proxy
+func (u *Proxy) Type() Type {
+	return ResProxy
 }

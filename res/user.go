@@ -5,16 +5,16 @@ import (
 	"fmt"
 )
 
-type user struct {
+type User struct {
 	ID          int    `json:"id"`
-	User        string `json:"user"`
+	User        string `json:"User"`
 	Password    string `json:"password"`
 	Token       string `json:"token"`
 	PayPassword string `json:"pay_password"`
 }
 
-func NewUser(id int, name, password, payPassword string) *user {
-	return &user{
+func NewUser(id int, name, password, payPassword string) *User {
+	return &User{
 		ID:          id,
 		User:        name,
 		Password:    password,
@@ -22,19 +22,19 @@ func NewUser(id int, name, password, payPassword string) *user {
 	}
 }
 
-func (u *user) GetID() int {
+func (u *User) GetID() int {
 	return u.ID
 }
 
-func (u *user) Info() []byte {
+func (u *User) Info() []byte {
 	info, _ := json.Marshal(u)
 	return info
 }
 
-func (u *user) Type() Type {
-	return User
+func (u *User) Type() Type {
+	return ResUser
 }
 
-func (u *user) String() string {
-	return fmt.Sprintf("user:%s, ID:%d, Token:%s", u.User, u.ID, u.Token)
+func (u *User) String() string {
+	return fmt.Sprintf("User:%s, ID:%d, Token:%s", u.User, u.ID, u.Token)
 }

@@ -2,27 +2,27 @@ package res
 
 import "encoding/json"
 
-type worker struct {
+type Worker struct {
 	ID   int    `json:"id"`   // 代理编号
 	Host string `json:"host"` // 代理 ip:port
 }
 
-func NewWorker(id int, host string) *worker {
-	return &worker{
+func NewWorker(id int, host string) *Worker {
+	return &Worker{
 		ID:   id,
 		Host: host,
 	}
 }
 
-func (u worker) GetID() int {
+func (u Worker) GetID() int {
 	return u.ID
 }
 
-func (u worker) Info() []byte {
+func (u Worker) Info() []byte {
 	info, _ := json.Marshal(u)
 	return info
 }
 
-func (u *worker) Type() Type {
-	return Proxy
+func (u *Worker) Type() Type {
+	return ResProxy
 }

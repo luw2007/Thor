@@ -8,21 +8,21 @@ import (
 type Type int
 
 const (
-	User Type = iota
-	CDN
-	Proxy
-	Worker
+	ResUser   Type = iota
+	ResCDN
+	ResProxy
+	ResWorker
 )
 
 func (p Type) String() string {
 	switch p {
-	case User:
+	case ResUser:
 		return "user"
-	case CDN:
+	case ResCDN:
 		return "cdn"
-	case Proxy:
+	case ResProxy:
 		return "proxy"
-	case Worker:
+	case ResWorker:
 		return "worker"
 	default:
 		return "unknown"
@@ -44,7 +44,11 @@ func NewMeta(id int, t Type, info []byte) *Meta {
 }
 
 func (m Meta) Key() string {
-	return fmt.Sprintf("%s:%s", m.Type, m.ID)
+	return MetaKey(m.Type, m.ID)
+}
+
+func MetaKey(t Type, id int) string {
+	return fmt.Sprintf("%s:%d", t, id)
 }
 
 func (m Meta) String() string {
@@ -53,20 +57,20 @@ func (m Meta) String() string {
 
 func (m Meta) Load() interface{} {
 	switch m.Type {
-	case User:
-		var u user
+	case ResUser:
+		var u User
 		json.Unmarshal(m.Info, &u)
 		return u
-	case CDN:
-		var c cdn
+	case ResCDN:
+		var c CDN
 		json.Unmarshal(m.Info, &c)
 		return c
-	case Proxy:
-		var p proxy
+	case ResProxy:
+		var p Proxy
 		json.Unmarshal(m.Info, &p)
 		return p
-	case Worker:
-		var p worker
+	case ResWorker:
+		var p Worker
 		json.Unmarshal(m.Info, &p)
 		return p
 	default:
