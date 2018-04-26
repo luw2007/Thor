@@ -5,9 +5,9 @@ import (
 )
 
 type CDN struct {
-	ID     int     `json:"id"`
+	ID     int    `json:"id"`
 	Source string `json:"source"` // 源地址
-	Host   string  `json:"host"`   // cdn地址 ip 或者ip:port
+	Host   string `json:"host"`   // cdn地址 ip 或者ip:port
 }
 
 func NewCDN(id int, source string, host string) *CDN {

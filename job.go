@@ -37,3 +37,20 @@ type Reply struct {
 	Info    json.RawMessage `json:"Info"`
 	Delay   int             `json:"delay"`
 }
+
+func (p *Job) Dumps() []byte {
+	v, _ := json.Marshal(p)
+	return v
+}
+
+func LoadReply(data []byte) *Reply {
+	var r Reply
+	json.Unmarshal(data, &r)
+	return &r
+}
+
+func LoadJob(data []byte) *Job {
+	var r Job
+	json.Unmarshal(data, &r)
+	return &r
+}

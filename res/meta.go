@@ -8,7 +8,7 @@ import (
 type Type int
 
 const (
-	ResUser   Type = iota
+	ResUser Type = iota
 	ResCDN
 	ResProxy
 	ResWorker
