@@ -55,6 +55,10 @@ func (p *direct) Post(uri string, ua string, params map[string]string) (int, []b
 	for key, item := range params {
 		v.Add(key, item)
 	}
+	p.entry.WithFields(logrus.Fields{
+		"uri":    uri,
+		"params": params,
+	}).Debug("post")
 	req, err := http.NewRequest("POST", uri, strings.NewReader(v.Encode()))
 	if err != nil {
 		p.entry.WithError(err).WithField("uri", uri).Error("request error")
@@ -62,8 +66,13 @@ func (p *direct) Post(uri string, ua string, params map[string]string) (int, []b
 	}
 	req.Header.Set("User-Agent", ua)
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-
 	resp, err := p.client.Do(req)
+	if err != nil {
+		p.entry.WithError(err).WithFields(logrus.Fields{
+			"uri": uri,
+		}).Error("http error")
+		return 503, nil
+	}
 	defer resp.Body.Close()
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
