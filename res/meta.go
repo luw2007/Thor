@@ -35,8 +35,8 @@ type Meta struct {
 	Info []byte
 }
 
-func NewMeta(id int, t Type, info []byte) *Meta {
-	return &Meta{
+func NewMeta(id int, t Type, info []byte) Meta {
+	return Meta{
 		Type: t,
 		ID:   id,
 		Info: info,
