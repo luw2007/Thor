@@ -15,7 +15,8 @@ const (
 	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
 	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 
-	ErrorCode = -1
+	ErrorCode      = -1
+	ErrorIPBanCOde = -2
 )
 
 // RandStringBytesMaskImpr 随机生成长度为n的字符串
